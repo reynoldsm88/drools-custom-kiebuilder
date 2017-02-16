@@ -31,6 +31,7 @@ import org.kie.internal.builder.ScoreCardConfiguration;
 import org.kie.internal.utils.KieService;
 
 import com.redhat.rules.custom.CustomKnowledgeBuilderImpl;
+//import com.redhat.rules.custom.CustomKnowledgeBuilderImpl;
 import com.sun.tools.xjc.Options;
 
 public class CustomKnowledgeBuilderFactoryServiceImpl extends KnowledgeBuilderFactoryServiceImpl implements KieService {

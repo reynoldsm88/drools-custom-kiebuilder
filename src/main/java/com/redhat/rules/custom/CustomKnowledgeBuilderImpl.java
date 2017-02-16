@@ -29,29 +29,4 @@ public class CustomKnowledgeBuilderImpl extends KnowledgeBuilderImpl {
     public CustomKnowledgeBuilderImpl( InternalKnowledgeBase kbase, KnowledgeBuilderConfigurationImpl conf ) {
         super( kbase, conf );
     }
-
-    @Override
-    public void setAssetFilter( AssetFilter assetFilter ) {
-        super.setAssetFilter( new AssetFilterDecorator( assetFilter ) );
-    }
-
-    public static class AssetFilterDecorator implements AssetFilter {
-        AssetFilter decorated;
-
-        public AssetFilterDecorator( AssetFilter decorated ) {
-            this.decorated = decorated;
-        }
-
-        @Override
-        public Action accept( Type type, String pkgName, String assetName ) {
-            System.out.println( "Type " + type + ". Package: " + pkgName + ". Asset: " + assetName );
-            if ( decorated != null ) {
-                return decorated.accept( type, pkgName, assetName );
-            }
-            else {
-                // what should I return here?
-                return Action.ADD;
-            }
-        }
-    }
 }
