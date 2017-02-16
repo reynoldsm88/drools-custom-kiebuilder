@@ -1,0 +1,67 @@
+package com.redhat.rules;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.redhat.model.BasicFactA;
+import com.redhat.model.BasicFactB;
+import com.redhat.model.CompositeFactC;
+import com.redhat.model.AggregateFactD;
+import com.redhat.rules.generated.facts.TransientFact;
+
+global com.redhat.model.GlobalFunctions functions;
+
+rule "Debug Rule 1"
+	salience 100
+	when
+		not( exists( AggregateFactD() ) )
+	then
+		insert( new AggregateFactD() );
+end
+
+rule "Debug Rule 2"
+	salience 100
+	when
+		not( exists( TransientFact() ) )
+	then
+		insert( new TransientFact() );
+end
+
+rule "Debug Rule 3"
+	when
+		$factA : BasicFactA()
+		$factB : BasicFactB()
+		$factC : CompositeFactC( factA == $factA, factB == $factB )
+		
+		$aggregate : AggregateFactD( facts not contains $factC ) 
+		
+	then
+		modify( $aggregate ) {
+			addFact( $factC )
+		};
+end
+
+rule "Debug Rule 4"
+	when
+		$factD : AggregateFactD()
+		$factC : CompositeFactC( $factA : factA, factA != null ) from $factD.facts
+		eval( functions.evaluate( $factA ) == true )
+	then
+		modify( $factC ){
+			setFactA( null )
+		};
+		System.err.println( "doing eval for " + $factA );
+end
+
+rule "Debug Rule 5"
+	when
+		$factD : AggregateFactD()
+		$factC : CompositeFactC( $factB : factB, factB != null ) from $factD.facts
+		eval( functions.evaluate( $factB ) == true )
+	then
+		System.err.println( "doing eval for " + $factB );
+		
+		modify( $factC ){
+			setFactB( null )
+		};
+end

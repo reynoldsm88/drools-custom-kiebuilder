@@ -1,0 +1,12 @@
+#
+*.log
+.metadata
+.classpath
+.settings
+.project
+target/
+.org_cloudsmith_geppetto_pptp_target/
+Servers/
+*.iml
+.idea/
+.DS_Store
